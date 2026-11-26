@@ -32,9 +32,11 @@ def main() -> int:
     if "\n" in text:
         print("error: the excuse must be a single line", file=sys.stderr)
         return 1
-    if len(text) > MAX_CHARS:
+    # Count in UTF-8 bytes, not characters: the em-dash is 3 bytes, and
+    # the grader's limit is on the bytes that land on disk.
+    if len(text.encode("utf-8")) > MAX_CHARS:
         print(
-            f"error: the excuse is {len(text)} characters, "
+            f"error: the excuse is {len(text.encode('utf-8'))} bytes, "
             f"over the {MAX_CHARS} limit",
             file=sys.stderr,
         )
